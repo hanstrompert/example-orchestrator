@@ -1,4 +1,4 @@
-from orchestrator.workflows import LazyWorkflowInstance, ALL_WORKFLOWS
+from orchestrator.workflows import ALL_WORKFLOWS, LazyWorkflowInstance
 
 LazyWorkflowInstance("workflows.user_group.create_user_group", "create_user_group")
 

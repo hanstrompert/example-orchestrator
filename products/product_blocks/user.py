@@ -1,16 +1,22 @@
 from orchestrator.domain.base import ProductBlockModel
 from orchestrator.types import SubscriptionLifecycle
 
-from products.product_blocks.user_group import UserGroupBlockInactive, UserGroupBlock
+from products.product_blocks.user_group import UserGroupBlockProvisioning, UserGroupBlockInactive, UserGroupBlock
 
 
-class UserBlockInactive(ProductBlockModel, product_block_name="User"):
+class UserBlockInactive(ProductBlockModel, lifecycle=[SubscriptionLifecycle.INITIAL], product_block_name="UserBlock"):
     group: UserGroupBlockInactive
-    name: str | None = None
+    username: str | None = None
     age: int | None = None
 
 
-class UserBlock(UserBlockInactive, lifecycle=[SubscriptionLifecycle.ACTIVE, SubscriptionLifecycle.PROVISIONING]):
+class UserBlockProvisioning(UserBlockInactive, lifecycle=[SubscriptionLifecycle.PROVISIONING]):
+    group: UserGroupBlockProvisioning
+    username: str
+    age: int | None = None
+
+
+class UserBlock(UserBlockProvisioning, lifecycle=[SubscriptionLifecycle.ACTIVE]):
     group: UserGroupBlock
-    name: str
+    username: str
     age: int | None = None
