@@ -1,7 +1,7 @@
 from orchestrator.domain.base import SubscriptionModel
 from orchestrator.types import SubscriptionLifecycle, strEnum
 
-from products.product_blocks.user import UserBlockProvisioning, UserBlockInactive, UserBlock
+from products.product_blocks.user import UserBlock, UserBlockInactive
 
 
 class Affiliation(strEnum):
@@ -16,7 +16,7 @@ class UserInactive(SubscriptionModel, is_base=True):
 
 class UserProvisioning(UserInactive, lifecycle=[SubscriptionLifecycle.PROVISIONING]):
     affiliation: Affiliation
-    settings: UserBlockProvisioning
+    settings: UserBlock
 
 
 class User(UserProvisioning, lifecycle=[SubscriptionLifecycle.ACTIVE]):

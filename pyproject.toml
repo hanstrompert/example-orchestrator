@@ -24,3 +24,6 @@ exclude = '''
   )/
 )
 '''
+
+[tool.mypy]
+namespace_packages = true

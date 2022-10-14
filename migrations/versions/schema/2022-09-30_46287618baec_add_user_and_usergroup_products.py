@@ -7,16 +7,16 @@ Create Date: 2022-09-30 14:02:14.929319
 """
 from uuid import uuid4
 
+import sqlalchemy as sa
 from alembic import op
 from orchestrator.migrations.helpers import create_workflow, delete_workflow
 from orchestrator.targets import Target
 
 from migrations.helpers import create, delete
-import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
-revision = '46287618baec'
-down_revision = 'bed6bc0b197a'
+revision = "46287618baec"
+down_revision = "bed6bc0b197a"
 branch_labels = None
 depends_on = None
 
@@ -58,6 +58,7 @@ new_products = {
             "status": "active",
             "resources": {
                 "group_name": "Unique name of user group",
+                "group_id": "Group ID in group management system"
             },
             "depends_on_block_relations": [],
         },
@@ -70,11 +71,12 @@ new_products = {
                 "affiliation": "User affiliation",
                 "username": "Unique name of user",
                 "age": "Age of user",
+                "user_id": "User ID in user management system"
             },
             "depends_on_block_relations": ["UserGroupBlock"],
         },
     },
-    "workflows": {}
+    "workflows": {},
 }
 
 new_workflows = [
