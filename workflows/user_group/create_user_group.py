@@ -7,7 +7,6 @@ from orchestrator.workflow import done, init, step, workflow
 from orchestrator.workflows.steps import resync, set_status, store_process_subscription
 from orchestrator.workflows.utils import wrap_create_initial_input_form
 
-from products import UserGroup
 from products.product_types.user_group import UserGroupInactive, UserGroupProvisioning
 
 
@@ -19,7 +18,6 @@ def initial_input_form_generator(product_name: str) -> FormGenerator:
         group_name: str
 
     user_input = yield CreateUserGroupForm
-
     return user_input.dict()
 
 

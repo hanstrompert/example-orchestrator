@@ -87,6 +87,12 @@ new_workflows = [
         "product_type": "UserGroup",
     },
     {
+        "name": "modify_user_group",
+        "target": Target.MODIFY,
+        "description": "Modify user group",
+        "product_type": "UserGroup",
+    },
+    {
         "name": "terminate_user_group",
         "target": Target.TERMINATE,
         "description": "Terminate user group",
@@ -96,6 +102,12 @@ new_workflows = [
         "name": "create_user",
         "target": Target.CREATE,
         "description": "Create user",
+        "product_type": "User",
+    },
+    {
+        "name": "modify_user",
+        "target": Target.MODIFY,
+        "description": "Modify user",
         "product_type": "User",
     },
     {

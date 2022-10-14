@@ -9,7 +9,7 @@ from orchestrator.workflows.utils import wrap_modify_initial_input_form
 from products import UserGroup
 
 
-def terminate_initial_input_form_generator(subscription_id: UUIDstr, organisation: UUIDstr) -> InputForm:
+def initial_input_form_generator(subscription_id: UUIDstr, organisation: UUIDstr) -> InputForm:
     temp_subscription_id = subscription_id
 
     class TerminateForm(FormPage):
@@ -32,7 +32,7 @@ def deprovision_user_group(subscription: UserGroup) -> State:
 
 @workflow(
     "Terminate user group",
-    initial_input_form=wrap_modify_initial_input_form(terminate_initial_input_form_generator),
+    initial_input_form=wrap_modify_initial_input_form(initial_input_form_generator),
     target=Target.TERMINATE,
 )
 def terminate_user_group():

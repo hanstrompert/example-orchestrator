@@ -1,0 +1,22 @@
+{
+  "forms": {
+    "fields": {
+      "group_name": "User group name",
+      "group_name_info": "Descriptive name for the user group",
+      "group_id": "User group ID",
+      "group_id_info": "ID of the user group in the user group provisioning system",
+      "note": "Notes",
+      "note_info": "Notes, reminders and feedback about this description."
+    }
+  },
+  "subscription": {
+  },
+  "subscription_instance": {
+  },
+  "workflow": {
+    "create_user_group": "Create user group",
+    "modify_user_group": "Modify user group",
+    "terminate_user_group": "Terminate user group",
+    "modify_note": "Modify subscription note"
+  }
+}
