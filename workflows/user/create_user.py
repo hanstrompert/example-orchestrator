@@ -16,7 +16,7 @@ from products.product_types.user_group import UserGroup
 logger = structlog.get_logger(__name__)
 
 
-def _user_group_selector() -> list:
+def user_group_selector() -> list:
     user_group_subscriptions = {}
     for user_group_id, user_group_description in (
         SubscriptionTable.query.join(ProductTable)
@@ -47,7 +47,7 @@ def initial_input_form_generator(product_name: str) -> FormGenerator:
             title = product_name
 
         username: str
-        user_group_id: _user_group_selector()  # type:ignore
+        user_group_id: user_group_selector()  # type:ignore
 
     user_input = yield CreateUserForm
 

@@ -17,6 +17,9 @@
     "create_user_group": "Create user group",
     "modify_user_group": "Modify user group",
     "terminate_user_group": "Terminate user group",
+    "create_user": "Create user",
+    "modify_user": "Modify user",
+    "terminate_user": "Terminate user",
     "modify_note": "Modify subscription note"
   }
 }
