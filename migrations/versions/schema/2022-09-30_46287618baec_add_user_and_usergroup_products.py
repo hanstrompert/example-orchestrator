@@ -38,7 +38,7 @@ new_products = {
             "tag": "INT_USER",
             "status": "active",
             "product_blocks": ["UserBlock"],
-            "fixed_inputs": {"Affiliation": "internal"},
+            "fixed_inputs": {"affiliation": "internal"},
         },
         "User external": {
             "product_id": uuid4(),
@@ -47,7 +47,7 @@ new_products = {
             "tag": "EXT_USER",
             "status": "active",
             "product_blocks": ["UserBlock"],
-            "fixed_inputs": {"Affiliation": "external"},
+            "fixed_inputs": {"affiliation": "external"},
         },
     },
     "product_blocks": {

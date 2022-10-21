@@ -18,10 +18,12 @@ def initial_input_form_generator(product_name: str) -> FormGenerator:
         group_name: str
 
     user_input = yield CreateUserGroupForm
+
     return user_input.dict()
 
 
 def _provision_in_group_management_system(user_group: str) -> int:
+
     return abs(hash(user_group))
 
 
@@ -46,6 +48,7 @@ def create_subscription(
 def provision_user_group(subscription: UserGroupProvisioning, group_name: str) -> State:
     group_id = _provision_in_group_management_system(group_name)
     subscription.settings.group_id = group_id
+
     return {"subscription": subscription, "group_id": group_id}
 
 
@@ -64,4 +67,5 @@ def create_user_group():
         >> resync
         >> done
     )
+
     return step_list
