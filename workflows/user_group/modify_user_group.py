@@ -20,7 +20,7 @@ def initial_input_form_generator(subscription_id: UUIDstr) -> FormGenerator:
     return user_input.dict()
 
 
-def _modify_in_group_management_system(user_id: int, group_name: str) -> int:
+def _modify_in_group_management_system(group_id: int, group_name: str) -> None:
     pass
 
 
@@ -28,7 +28,7 @@ def _modify_in_group_management_system(user_id: int, group_name: str) -> int:
 def modify_user_group_subscription(subscription: UserGroup, group_name: str) -> State:
     _modify_in_group_management_system(subscription.settings.group_id, group_name)
     subscription.settings.group_name = group_name
-    subscription.description = f"User group {group_name}"
+    subscription.description = f"User Group {group_name}"
     return {"subscription": subscription}
 
 

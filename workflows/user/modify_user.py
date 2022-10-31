@@ -18,6 +18,7 @@ def initial_input_form_generator(subscription_id: UUIDstr) -> FormGenerator:
 
     class ModifyUserForm(FormPage):
         username: str = user.settings.username
+        age: int | None = user.settings.age
         user_group_id: user_group_selector() = [str(user.settings.group.owner_subscription_id)]  # type:ignore
 
     user_input = yield ModifyUserForm
@@ -25,21 +26,23 @@ def initial_input_form_generator(subscription_id: UUIDstr) -> FormGenerator:
     return user_input.dict()
 
 
-def _modify_in_user_management_system(username: str) -> int:
+def _modify_in_user_management_system(username: str, age: int) -> None:
     pass
 
 
-@step("Create subscription")
+@step("Modify subscription")
 def modify_user_subscription(
     subscription: User,
     username: str,
+    age: int,
     user_group_id: str,
 ) -> State:
-    _modify_in_user_management_system(username)
+    _modify_in_user_management_system(username, age)
     subscription.settings.username = username
+    subscription.settings.age = age
     subscription.settings.group = UserGroup.from_subscription(user_group_id[0]).settings
     subscription.description = (
-        f"{subscription.affiliation} user {username} from group {subscription.settings.group.group_name}"
+        f"User {username} from group {subscription.settings.group.group_name} ({subscription.affiliation})"
     )
 
     return {

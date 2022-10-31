@@ -35,7 +35,7 @@ def create_subscription(
     user_group = UserGroupInactive.from_product_id(product, uuid4())  # TODO mock organizations endpoint
     user_group.settings.group_name = group_name
     user_group = UserGroupProvisioning.from_other_lifecycle(user_group, SubscriptionLifecycle.PROVISIONING)
-    user_group.description = f"User group {group_name}"
+    user_group.description = f"User Group {group_name}"
 
     return {
         "subscription": user_group,

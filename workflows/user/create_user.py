@@ -47,6 +47,7 @@ def initial_input_form_generator(product_name: str) -> FormGenerator:
             title = product_name
 
         username: str
+        age: int | None
         user_group_id: user_group_selector()  # type:ignore
 
     user_input = yield CreateUserForm
@@ -54,7 +55,7 @@ def initial_input_form_generator(product_name: str) -> FormGenerator:
     return user_input.dict()
 
 
-def _provision_in_user_management_system(username: str) -> int:
+def _provision_in_user_management_system(username: str, age: int) -> int:
 
     return abs(hash(username))
 
@@ -63,13 +64,15 @@ def _provision_in_user_management_system(username: str) -> int:
 def create_subscription(
     product: UUIDstr,
     username: str,
+    age: int,
     user_group_id: str,
 ) -> State:
     user = UserInactive.from_product_id(product, uuid4())  # TODO mock organizations endpoint
     user.settings.username = username
+    user.settings.age = age
     user.settings.group = UserGroup.from_subscription(user_group_id[0]).settings
     user = UserProvisioning.from_other_lifecycle(user, SubscriptionLifecycle.PROVISIONING)
-    user.description = f"{user.affiliation} user {username} from group {user.settings.group.group_name}"
+    user.description = f"User {username} from group {user.settings.group.group_name} ({user.affiliation})"
 
     return {
         "subscription": user,
@@ -79,8 +82,8 @@ def create_subscription(
 
 
 @step("Provision user")
-def provision_user(subscription: UserProvisioning, username: str) -> State:
-    user_id = _provision_in_user_management_system(username)
+def provision_user(subscription: UserProvisioning, username: str, age: int) -> State:
+    user_id = _provision_in_user_management_system(username, age)
     subscription.settings.user_id = user_id
 
     return {"subscription": subscription, "user_id": user_id}

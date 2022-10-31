@@ -22,7 +22,7 @@ depends_on = None
 
 new_products = {
     "products": {
-        "User group": {
+        "User Group": {
             "product_id": uuid4(),
             "product_type": "UserGroup",
             "description": "User group product",
