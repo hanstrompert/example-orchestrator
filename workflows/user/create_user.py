@@ -30,7 +30,7 @@ def user_group_selector() -> list:
         user_group_subscriptions[str(user_group_id)] = user_group_description
 
     return choice_list(
-        Choice("UserGroupEnum", zip(user_group_subscriptions, user_group_subscriptions.items())),  # type:ignore
+        Choice("UserGroupEnum", zip(user_group_subscriptions.keys(), user_group_subscriptions.items())),  # type:ignore
         min_items=1,
         max_items=1,
     )
