@@ -32,22 +32,22 @@ def create_subscription(
     product: UUIDstr,
     group_name: str,
 ) -> State:
-    user_group = UserGroupInactive.from_product_id(product, uuid4())  # TODO mock organizations endpoint
-    user_group.settings.group_name = group_name
-    user_group = UserGroupProvisioning.from_other_lifecycle(user_group, SubscriptionLifecycle.PROVISIONING)
-    user_group.description = f"User Group {group_name}"
+    subscription = UserGroupInactive.from_product_id(product, uuid4())  # TODO mock organizations endpoint
+    subscription.user_group.group_name = group_name
+    subscription = UserGroupProvisioning.from_other_lifecycle(subscription, SubscriptionLifecycle.PROVISIONING)
+    subscription.description = f"User Group {group_name}"
 
     return {
-        "subscription": user_group,
-        "subscription_id": user_group.subscription_id,
-        "subscription_description": user_group.description,
+        "subscription": subscription,
+        "subscription_id": subscription.subscription_id,
+        "subscription_description": subscription.description,
     }
 
 
 @step("Provision user group")
 def provision_user_group(subscription: UserGroupProvisioning, group_name: str) -> State:
     group_id = _provision_in_group_management_system(group_name)
-    subscription.settings.group_id = group_id
+    subscription.user_group.group_id = group_id
 
     return {"subscription": subscription, "group_id": group_id}
 

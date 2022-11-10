@@ -9,11 +9,11 @@ from products.product_types.user_group import UserGroup
 
 
 def initial_input_form_generator(subscription_id: UUIDstr) -> FormGenerator:
-    user_group = UserGroup.from_subscription(subscription_id)
+    subscription = UserGroup.from_subscription(subscription_id)
 
     class ModifyUserGroupForm(FormPage):
-        group_name: str = user_group.settings.group_name
-        group_id: int = ReadOnlyField(user_group.settings.group_id)
+        group_name: str = subscription.user_group.group_name
+        group_id: int = ReadOnlyField(subscription.user_group.group_id)
 
     user_input = yield ModifyUserGroupForm
 
@@ -26,8 +26,8 @@ def _modify_in_group_management_system(group_id: int, group_name: str) -> None:
 
 @step("Modify user group")
 def modify_user_group_subscription(subscription: UserGroup, group_name: str) -> State:
-    _modify_in_group_management_system(subscription.settings.group_id, group_name)
-    subscription.settings.group_name = group_name
+    _modify_in_group_management_system(subscription.user_group.group_id, group_name)
+    subscription.user_group.group_name = group_name
     subscription.description = f"User Group {group_name}"
     return {"subscription": subscription}
 

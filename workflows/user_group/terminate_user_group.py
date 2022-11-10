@@ -26,8 +26,8 @@ def _deprovision_in_group_management_system(user_id: int) -> int:
 
 @step("Deprovision user group")
 def deprovision_user_group(subscription: UserGroup) -> State:
-    _deprovision_in_group_management_system(subscription.settings.group_id)
-    return {"user_group_deprovision_status": f"deprovisioned user group with id {subscription.settings.group_id}"}
+    _deprovision_in_group_management_system(subscription.user_group.group_id)
+    return {"user_group_deprovision_status": f"deprovisioned user group with id {subscription.user_group.group_id}"}
 
 
 @workflow(

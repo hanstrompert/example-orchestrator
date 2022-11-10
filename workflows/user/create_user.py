@@ -67,24 +67,26 @@ def create_subscription(
     age: int,
     user_group_id: str,
 ) -> State:
-    user = UserInactive.from_product_id(product, uuid4())  # TODO mock organizations endpoint
-    user.settings.username = username
-    user.settings.age = age
-    user.settings.group = UserGroup.from_subscription(user_group_id[0]).settings
-    user = UserProvisioning.from_other_lifecycle(user, SubscriptionLifecycle.PROVISIONING)
-    user.description = f"User {username} from group {user.settings.group.group_name} ({user.affiliation})"
+    subscription = UserInactive.from_product_id(product, uuid4())  # TODO mock organizations endpoint
+    subscription.user.username = username
+    subscription.user.age = age
+    subscription.user.group = UserGroup.from_subscription(user_group_id[0]).user_group
+    subscription = UserProvisioning.from_other_lifecycle(subscription, SubscriptionLifecycle.PROVISIONING)
+    subscription.description = (
+        f"User {username} from group {subscription.user.group.group_name} ({subscription.affiliation})"
+    )
 
     return {
-        "subscription": user,
-        "subscription_id": user.subscription_id,
-        "subscription_description": user.description,
+        "subscription": subscription,
+        "subscription_id": subscription.subscription_id,
+        "subscription_description": subscription.description,
     }
 
 
 @step("Provision user")
 def provision_user(subscription: UserProvisioning, username: str, age: int) -> State:
     user_id = _provision_in_user_management_system(username, age)
-    subscription.settings.user_id = user_id
+    subscription.user.user_id = user_id
 
     return {"subscription": subscription, "user_id": user_id}
 

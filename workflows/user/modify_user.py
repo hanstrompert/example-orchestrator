@@ -14,12 +14,12 @@ logger = structlog.get_logger(__name__)
 
 
 def initial_input_form_generator(subscription_id: UUIDstr) -> FormGenerator:
-    user = User.from_subscription(subscription_id)
+    subscription = User.from_subscription(subscription_id)
 
     class ModifyUserForm(FormPage):
-        username: str = user.settings.username
-        age: int | None = user.settings.age
-        user_group_id: user_group_selector() = [str(user.settings.group.owner_subscription_id)]  # type:ignore
+        username: str = subscription.user.username
+        age: int | None = subscription.user.age
+        user_group_id: user_group_selector() = [str(subscription.user.group.owner_subscription_id)]  # type:ignore
 
     user_input = yield ModifyUserForm
 
@@ -38,11 +38,11 @@ def modify_user_subscription(
     user_group_id: str,
 ) -> State:
     _modify_in_user_management_system(username, age)
-    subscription.settings.username = username
-    subscription.settings.age = age
-    subscription.settings.group = UserGroup.from_subscription(user_group_id[0]).settings
+    subscription.user.username = username
+    subscription.user.age = age
+    subscription.user.group = UserGroup.from_subscription(user_group_id[0]).user_group
     subscription.description = (
-        f"User {username} from group {subscription.settings.group.group_name} ({subscription.affiliation})"
+        f"User {username} from group {subscription.user.group.group_name} ({subscription.affiliation})"
     )
 
     return {

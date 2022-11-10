@@ -5,12 +5,12 @@ from products.product_blocks.user_group import UserGroupBlock, UserGroupBlockIna
 
 
 class UserGroupInactive(SubscriptionModel, is_base=True, lifecycle=[SubscriptionLifecycle.INITIAL]):
-    settings: UserGroupBlockInactive
+    user_group: UserGroupBlockInactive
 
 
 class UserGroupProvisioning(UserGroupInactive, lifecycle=[SubscriptionLifecycle.PROVISIONING]):
-    settings: UserGroupBlockProvisioning
+    user_group: UserGroupBlockProvisioning
 
 
 class UserGroup(UserGroupProvisioning, lifecycle=[SubscriptionLifecycle.ACTIVE]):
-    settings: UserGroupBlock
+    user_group: UserGroupBlock

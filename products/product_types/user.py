@@ -11,14 +11,14 @@ class Affiliation(strEnum):
 
 class UserInactive(SubscriptionModel, is_base=True):
     affiliation: Affiliation
-    settings: UserBlockInactive
+    user: UserBlockInactive
 
 
 class UserProvisioning(UserInactive, lifecycle=[SubscriptionLifecycle.PROVISIONING]):
     affiliation: Affiliation
-    settings: UserBlockProvisioning
+    user: UserBlockProvisioning
 
 
 class User(UserProvisioning, lifecycle=[SubscriptionLifecycle.ACTIVE]):
     affiliation: Affiliation
-    settings: UserBlock
+    user: UserBlock

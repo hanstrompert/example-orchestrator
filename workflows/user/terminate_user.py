@@ -26,8 +26,8 @@ def _deprovision_in_user_management_system(user_id: int) -> int:
 
 @step("Deprovision user")
 def deprovision_user(subscription: User) -> State:
-    _deprovision_in_user_management_system(subscription.settings.user_id)
-    return {"user_deprovision_status": f"deprovisioned user with id {subscription.settings.user_id}"}
+    _deprovision_in_user_management_system(subscription.user.user_id)
+    return {"user_deprovision_status": f"deprovisioned user with id {subscription.user.user_id}"}
 
 
 @workflow(
