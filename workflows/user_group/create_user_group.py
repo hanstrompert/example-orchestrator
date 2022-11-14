@@ -28,20 +28,19 @@ def _provision_in_group_management_system(user_group: str) -> int:
 
 
 @step("Create subscription")
-def create_subscription(
-    product: UUIDstr,
-    group_name: str,
-) -> State:
+def create_subscription(product: UUIDstr) -> State:
     subscription = UserGroupInactive.from_product_id(product, uuid4())  # TODO mock organizations endpoint
-    subscription.user_group.group_name = group_name
-    subscription = UserGroupProvisioning.from_other_lifecycle(subscription, SubscriptionLifecycle.PROVISIONING)
-    subscription.description = f"User Group {group_name}"
 
-    return {
-        "subscription": subscription,
-        "subscription_id": subscription.subscription_id,
-        "subscription_description": subscription.description,
-    }
+    return {"subscription": subscription, "subscription_id": subscription.subscription_id}
+
+
+@step("Initialize subscription")
+def initialize_subscription(subscription: UserGroupInactive, group_name: str) -> State:
+    subscription.user_group.group_name = group_name
+    subscription.description = f"User Group {group_name}"
+    subscription = UserGroupProvisioning.from_other_lifecycle(subscription, SubscriptionLifecycle.PROVISIONING)
+
+    return {"subscription": subscription}
 
 
 @step("Provision user group")
@@ -49,7 +48,7 @@ def provision_user_group(subscription: UserGroupProvisioning, group_name: str) -
     group_id = _provision_in_group_management_system(group_name)
     subscription.user_group.group_id = group_id
 
-    return {"subscription": subscription, "group_id": group_id}
+    return {"subscription": subscription}
 
 
 @workflow(
@@ -58,14 +57,14 @@ def provision_user_group(subscription: UserGroupProvisioning, group_name: str) -
     target=Target.CREATE,
 )
 def create_user_group():
-    step_list = (
+
+    return (
         init
         >> create_subscription
         >> store_process_subscription(Target.CREATE)
+        >> initialize_subscription
         >> provision_user_group
         >> set_status(SubscriptionLifecycle.ACTIVE)
         >> resync
         >> done
     )
-
-    return step_list

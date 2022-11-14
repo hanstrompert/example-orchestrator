@@ -1,5 +1,5 @@
 from orchestrator.forms import FormPage
-from orchestrator.forms.validators import DisplaySubscription
+from orchestrator.forms.validators import Label
 from orchestrator.targets import Target
 from orchestrator.types import InputForm, State, SubscriptionLifecycle, UUIDstr
 from orchestrator.workflow import done, init, step, workflow
@@ -10,12 +10,10 @@ from products import UserGroup
 
 
 def initial_input_form_generator(subscription_id: UUIDstr, organisation: UUIDstr) -> InputForm:
-    temp_subscription_id = subscription_id
+    subscription = UserGroup.from_subscription(subscription_id)
 
     class TerminateForm(FormPage):
-        subscription_id: DisplaySubscription = temp_subscription_id  # type: ignore
-
-        # _check_not_in_use_by_nsi_lp: classmethod = root_validator(allow_reuse=True)(validate_not_in_use_by_nsi_lp)
+        are_you_sure: Label = f"Are you sure you want to remove {subscription.description}?"
 
     return TerminateForm
 
@@ -27,7 +25,6 @@ def _deprovision_in_group_management_system(user_id: int) -> int:
 @step("Deprovision user group")
 def deprovision_user_group(subscription: UserGroup) -> State:
     _deprovision_in_group_management_system(subscription.user_group.group_id)
-    return {"user_group_deprovision_status": f"deprovisioned user group with id {subscription.user_group.group_id}"}
 
 
 @workflow(
@@ -36,7 +33,8 @@ def deprovision_user_group(subscription: UserGroup) -> State:
     target=Target.TERMINATE,
 )
 def terminate_user_group():
-    step_list = (
+
+    return (
         init
         >> store_process_subscription(Target.TERMINATE)
         >> unsync
@@ -45,4 +43,3 @@ def terminate_user_group():
         >> resync
         >> done
     )
-    return step_list

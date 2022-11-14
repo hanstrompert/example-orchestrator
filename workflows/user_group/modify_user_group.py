@@ -29,6 +29,7 @@ def modify_user_group_subscription(subscription: UserGroup, group_name: str) -> 
     _modify_in_group_management_system(subscription.user_group.group_id, group_name)
     subscription.user_group.group_name = group_name
     subscription.description = f"User Group {group_name}"
+
     return {"subscription": subscription}
 
 
@@ -38,7 +39,12 @@ def modify_user_group_subscription(subscription: UserGroup, group_name: str) -> 
     target=Target.MODIFY,
 )
 def modify_user_group():
-    step_list = (
-        init >> store_process_subscription(Target.MODIFY) >> unsync >> modify_user_group_subscription >> resync >> done
+
+    return (
+        init
+        >> store_process_subscription(Target.MODIFY)
+        >> unsync
+        >> modify_user_group_subscription
+        >> resync
+        >> done
     )
-    return step_list
