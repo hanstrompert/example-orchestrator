@@ -1,4 +1,3 @@
-import structlog
 from orchestrator.forms import FormPage
 from orchestrator.targets import Target
 from orchestrator.types import FormGenerator, State, UUIDstr
@@ -9,8 +8,6 @@ from orchestrator.workflows.utils import wrap_modify_initial_input_form
 from products.product_types.user import User
 from products.product_types.user_group import UserGroup
 from workflows.user.create_user import user_group_selector
-
-logger = structlog.get_logger(__name__)
 
 
 def initial_input_form_generator(subscription_id: UUIDstr) -> FormGenerator:

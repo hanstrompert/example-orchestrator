@@ -1,6 +1,5 @@
 from uuid import uuid4
 
-import structlog
 from orchestrator.db.models import ProductTable, SubscriptionTable
 from orchestrator.forms import FormPage
 from orchestrator.forms.validators import Choice, choice_list
@@ -12,8 +11,6 @@ from orchestrator.workflows.utils import wrap_create_initial_input_form
 
 from products.product_types.user import UserInactive, UserProvisioning
 from products.product_types.user_group import UserGroup
-
-logger = structlog.get_logger(__name__)
 
 
 def user_group_selector() -> list:
