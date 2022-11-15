@@ -41,10 +41,5 @@ def modify_user_group_subscription(subscription: UserGroup, group_name: str) -> 
 def modify_user_group():
 
     return (
-        init
-        >> store_process_subscription(Target.MODIFY)
-        >> unsync
-        >> modify_user_group_subscription
-        >> resync
-        >> done
+        init >> store_process_subscription(Target.MODIFY) >> unsync >> modify_user_group_subscription >> resync >> done
     )
